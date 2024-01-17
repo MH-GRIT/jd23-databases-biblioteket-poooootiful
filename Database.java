@@ -2,8 +2,6 @@ package src;
 
 import com.mysql.cj.jdbc.MysqlDataSource;
 
-import java.sql.*;
-
 public class Database {
 
     //Database Configuration
