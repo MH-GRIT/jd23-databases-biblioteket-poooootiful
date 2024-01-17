@@ -1,5 +1,3 @@
-package src;
-
 import com.mysql.cj.jdbc.MysqlDataSource;
 
 import java.sql.*;

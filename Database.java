@@ -1,5 +1,3 @@
-package src;
-
 import com.mysql.cj.jdbc.MysqlDataSource;
 
 public class Database {
