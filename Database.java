@@ -1,5 +1,4 @@
 import com.mysql.cj.jdbc.MysqlDataSource;
-
 import java.sql.*;
 
 public class Database {
@@ -8,11 +7,9 @@ public class Database {
     //Database Configuration
     static String url = "localhost";
     static int port = 3306;
-    static String database = "";
-    static String username = "";
-    static String password = "";
-
-
+    static String database = "FulkopingLibrary";
+    static String username = "root";
+    static String password = "8462";
 
     //Private variables
     private static Database db;
@@ -46,7 +43,6 @@ public class Database {
         }
         return db.createConnection();
     }
-
 
     public static void PrintSQLException(SQLException sqle) {
         PrintSQLException(sqle, false);
