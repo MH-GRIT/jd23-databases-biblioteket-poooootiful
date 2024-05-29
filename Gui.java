@@ -39,6 +39,17 @@ public class Gui implements ActionListener {
 
     static JButton ConfirmBorrow = new JButton("ConfirmBorrow");
 
+    static String [] choises = {"Book","Media"};
+
+    static JComboBox chose = new JComboBox<String>(choises);
+
+    static JLabel info = new JLabel("Pick a id of either a book or other to borrow");
+
+    static JFrame returnFrame = new JFrame("Return");
+
+    static JButton ConfirmReturn = new JButton("ConfirmReturn");
+
+    static JTextField idinput = new JTextField();
 
     Gui () {
         Library.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
@@ -84,6 +95,9 @@ public class Gui implements ActionListener {
         Return.setVisible(true);
         Return.addActionListener(this);
         ConfirmBorrow.addActionListener(this);
+        chose.addActionListener(this);
+        ConfirmReturn.addActionListener(this);
+        idinput.setPreferredSize(new Dimension(20,20));
     }
 
     public static void ResultGui(String id, String name,String type) {
@@ -197,14 +211,27 @@ public class Gui implements ActionListener {
         SearchFrame.repaint();
     }
 
+    public static void clearReturnFrame () {
+        returnFrame.getContentPane().removeAll();
+        returnFrame.revalidate();
+        returnFrame.repaint();
+    }
+
+    public static void clearBorrowFrame () {
+        BorrowFrame.getContentPane().removeAll();
+        BorrowFrame.revalidate();
+        BorrowFrame.repaint();
+    }
+
     public static void borrowGui(){
 
-        BorrowFrame.setSize(600,600);
-        BorrowFrame.setLayout(new GridLayout(2,2));
-        BorrowFrame.add(input);
+        BorrowFrame.setSize(600,100);
+        BorrowFrame.setLayout(new GridLayout(1,4));
 
         if (id>0) {
+            BorrowFrame.add(info);
             BorrowFrame.add(input);
+            BorrowFrame.add(chose);
             BorrowFrame.add(ConfirmBorrow);
             BorrowFrame.setVisible(true);
 
@@ -214,6 +241,20 @@ public class Gui implements ActionListener {
             BorrowFrame.setVisible(true);
 
         }
+    }
+
+    public static void returnGui (int typeid, String type){
+        returnFrame.setSize(250,600);
+        returnFrame.setLayout(new FlowLayout(FlowLayout.LEFT));
+
+        JLabel types = new JLabel("You have a "+type+" borrowed");
+        JLabel with = new JLabel("with id");
+        JLabel id = new JLabel(String.valueOf(typeid));
+        returnFrame.add(types);
+        returnFrame.add(with);
+        returnFrame.add(id);
+
+        returnFrame.setVisible(true);
     }
 
     @Override
@@ -258,17 +299,82 @@ public class Gui implements ActionListener {
             GetInfo.getHistory(id);
         }
         else if (btn.matches("Borrow")) {
+            clearBorrowFrame();
+            numbers.clear();
+            types.clear();
             //Function to get all the unavalible ints
             GetInfo.getAllInts();
+
         }if (btn.matches("ConfirmBorrow")){
-            String id = input.getText();
+
+            String pickid = input.getText();
+            String pick = chose.getSelectedItem().toString();
+
+            if (pick.matches("Book")) {
+                String type = "books";
+                GetInfo.MaybeRemoveIdFromList(pickid,type,"book");
+            }else if (pick.matches("Media")){
+                String type = "other";
+                GetInfo.MaybeRemoveIdFromList(pickid,type,"other");
+            }
+
             System.out.println(numbers);
             System.out.println(types);
             System.out.println(id);
+            System.out.println(pickid);
+
+            int number = GetInfo.CheckIdBorrowed(pickid);
+
+            System.out.println(number);
+
+            if (number==-2) {
+                JLabel No = new JLabel("The id has already been borrow as both a book and a media");
+                BorrowFrame.add(No);
+            }
+            else if (number>0) {
+                String type = GetInfo.checkType(number);
+
+                if (type.matches("Book")) {
+                    if (pick.matches("Book")) {
+                        JLabel BorrowNo = new JLabel("You can't borrow that book right now");
+                        BorrowFrame.add(BorrowNo);
+                    }else {
+                        GetInfo.addBorrowOther(id,pickid);
+                        JLabel BorrowYes = new JLabel("You have borrowed the Media with id: "+pickid);
+                        BorrowFrame.add(BorrowYes);
+                    }
+                }
+                else if (type.matches("Media")) {
+                    if (pick.matches("Media")) {
+                        JLabel BorrowNo = new JLabel("You can't borrow that media right now");
+                        BorrowFrame.add(BorrowNo);
+                    }else {
+                        GetInfo.addBorrowBook(id,pickid);
+                        JLabel BorrowYes = new JLabel("You have borrowed the Book with id: "+pickid);
+                        BorrowFrame.add(BorrowYes);
+                    }
+                }
+            }
+            else {
+                if (pick.matches("Book")) {
+                    GetInfo.addBorrowBook(id,pickid);
+                }else if (pick.matches("Media")){
+                    GetInfo.addBorrowOther(id,pickid);
+                }
+            }
 
         }
         else if (btn.matches("Return")) {
-            
+            clearReturnFrame();
+            returnFrame.add(idinput);
+            returnFrame.add(chose);
+            returnFrame.add(ConfirmReturn);
+            GetInfo.getWhatYouBorrowed(id);
+
+        }if (btn.matches("ConfirmReturn")) {
+            String inputid = idinput.getText();
+            String type = chose.getSelectedItem().toString();
+            GetInfo.returns(id,type,inputid);
         }
     }
 }
