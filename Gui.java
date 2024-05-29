@@ -8,12 +8,13 @@ import java.util.Date;
 public class Gui implements ActionListener {
     //Frames
     JFrame LoginFrame = new JFrame("Login");
-    JFrame ProfileFrame = new JFrame("Profile");
+    static JFrame ProfileFrame = new JFrame("Profile");
     JFrame Library = new JFrame("Fulkoping");
     static JFrame SearchFrame = new JFrame("Search Results");
     static JFrame StatusFrame = new JFrame("Status");
     static JFrame HistoryFrame = new JFrame("History");
     static JFrame BorrowFrame = new JFrame("Borrow");
+    static JFrame returnFrame = new JFrame("Return");
 
     //TextFields/PasswordField
     static JTextField Username = new JTextField();
@@ -26,77 +27,66 @@ public class Gui implements ActionListener {
     JTextField SearchBox = new JTextField();
 
     //Labels
-
-    static int id;
-
     static  JLabel ThingLabel = new JLabel();
+    static JLabel info = new JLabel("Pick the id you wanna borrow");
 
-    static ArrayList<Integer> numbers = new ArrayList<>();
-
-    static ArrayList<String> types = new ArrayList<>();
-
-
+    //Buttons
     static JButton ConfirmBorrow = new JButton("ConfirmBorrow");
-
-    static String [] choises = {"Book","Media"};
-
-    static JComboBox chose = new JComboBox<String>(choises);
-
-    static JLabel info = new JLabel("Pick a id of either a book or other to borrow");
-
-    static JFrame returnFrame = new JFrame("Return");
-
     static JButton ConfirmReturn = new JButton("ConfirmReturn");
 
+    //Arraylists, ints and strings
+    static int id;
+    static ArrayList<Integer> numbers = new ArrayList<>();
+    static ArrayList<String> types = new ArrayList<>();
+    static String [] choises = {"Book","Media"};
 
+    //Combobox
+    static JComboBox chose = new JComboBox<String>(choises);
     Gui () {
+        //The starting library frame
         Library.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         Library.setLayout(new GridLayout(10,6));
         Library.setSize(800,500);
         Library.setVisible(true);
 
-        SearchBox.setVisible(true);
         Library.add(SearchBox);
 
+        //Making buttons adding them to the frame with ActionListener
         JButton SearchBtn = new JButton("Search");
         Library.add(SearchBtn);
-        SearchBtn.setVisible(true);
         SearchBtn.addActionListener(this);
 
         JButton LoginBtn = new JButton("Login");
         Library.add(LoginBtn);
-        LoginBtn.setVisible(true);
         LoginBtn.addActionListener(this);
 
         JButton Profile = new JButton("Profile");
         Library.add(Profile);
-        Profile.setVisible(true);
         Profile.addActionListener(this);
 
         JButton Status = new JButton("Status");
         Library.add(Status);
-        Status.setVisible(true);
         Status.addActionListener(this);
 
         JButton History = new JButton("History");
         Library.add(History);
-        History.setVisible(true);
         History.addActionListener(this);
 
         JButton Borrow = new JButton("Borrow");
         Library.add(Borrow);
-        Borrow.setVisible(true);
         Borrow.addActionListener(this);
 
         JButton Return = new JButton("Return");
         Library.add(Return);
-        Return.setVisible(true);
         Return.addActionListener(this);
+
+        //Some extra ActionListeners for buttons used later & dimensions for idinput
         ConfirmBorrow.addActionListener(this);
         chose.addActionListener(this);
         ConfirmReturn.addActionListener(this);
         idinput.setPreferredSize(new Dimension(20,20));
 
+        //Label at the button off the program
         JLabel Info = new JLabel("If a button don't do anything it means you need to log in");
         Library.add(Info);
     }
@@ -225,9 +215,15 @@ public class Gui implements ActionListener {
         BorrowFrame.repaint();
     }
 
+    public static void clearProfileFrame () {
+        ProfileFrame.getContentPane().removeAll();
+        ProfileFrame.revalidate();
+        ProfileFrame.repaint();
+    }
+
     public static void borrowGui(){
 
-        BorrowFrame.setSize(600,100);
+        BorrowFrame.setSize(800,100);
         BorrowFrame.setLayout(new GridLayout(1,4));
 
         if (id>0) {
@@ -286,6 +282,7 @@ public class Gui implements ActionListener {
             }
         }
         else if (btn.matches("Profile")) {
+            clearProfileFrame();
             Profile(id);
         }
         if (btn.matches("Confirm")){

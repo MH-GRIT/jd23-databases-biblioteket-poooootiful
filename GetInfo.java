@@ -7,7 +7,6 @@ public class GetInfo {
         Connection connection = Database.getConnection();
         if (connection == null) {
             System.out.println("Could not connect");
-            Gui.Errors.setText("Could not Connect");
             System.exit(-1);
         }
         String BookSearch = "SELECT name, id FROM books WHERE name LIKE '"+term+"'";
@@ -30,7 +29,6 @@ public class GetInfo {
         Connection connection = Database.getConnection();
         if (connection == null) {
             System.out.println("Could not connect");
-            Gui.Errors.setText("Could not Connect");
             System.exit(-1);
         }
         String OtherSearch = "SELECT name, id FROM other WHERE name LIKE '"+term+"'";
@@ -54,7 +52,6 @@ public class GetInfo {
         Connection connection = Database.getConnection();
         if (connection == null) {
             System.out.println("Could not connect");
-            Gui.Errors.setText("Could not Connect");
             System.exit(-1);
         }
         String AuthorSearch = "SELECT name, id FROM authors WHERE name LIKE '"+term+"'";
@@ -80,7 +77,6 @@ public class GetInfo {
 
         if (connection == null) {
             System.out.println("Could not connect");
-            Gui.Errors.setText("Could not Connect");
             System.exit(-1);
         }
 
@@ -114,7 +110,6 @@ public class GetInfo {
 
         if (connection == null) {
             System.out.println("Could not connect");
-            Gui.Errors.setText("Could not Connect");
             System.exit(-1);
         }
         String sql = "SELECT bookid, borrowedday,ruturnday, lastreturnday from borrowedbooks WHERE userid ="+userid;
@@ -145,7 +140,6 @@ public class GetInfo {
 
         if (connection == null) {
             System.out.println("Could not connect");
-            Gui.Errors.setText("Could not Connect");
             System.exit(-1);
         }
         String sql = "SELECT otherid, borrowedday,ruturnday, lastreturnday from borrowedother WHERE userid ="+userid;
@@ -179,7 +173,6 @@ public class GetInfo {
 
         if (connection == null) {
             System.out.println("Could not connect");
-            Gui.Errors.setText("Could not Connect");
             System.exit(-1);
         }
         System.out.println(name);
@@ -206,6 +199,10 @@ public class GetInfo {
         Connection connection = Database.getConnection();
         String sql = "SELECT bookid, borrowedday, ruturnday, lastreturnday FROM borrowedbooks WHERE userid = "+userId+";";
         String book = "Book";
+        if (connection == null) {
+            System.out.println("Could not connect");
+            System.exit(-1);
+        }
         try {
 
             Statement statement = connection.createStatement();
@@ -233,6 +230,10 @@ public class GetInfo {
         Connection connection = Database.getConnection();
         String sql = "SELECT otherid, borrowedday, ruturnday, lastreturnday FROM borrowedother WHERE userid = "+userId+";";
         String media = "Media";
+        if (connection == null) {
+            System.out.println("Could not connect");
+            System.exit(-1);
+        }
         try {
 
             Statement statement = connection.createStatement();
@@ -266,6 +267,10 @@ public class GetInfo {
     public static void getBookInts () {
         Connection connection = Database.getConnection();
         String sql = "SELECT bookid FROM borrowedbooks";
+        if (connection == null) {
+            System.out.println("Could not connect");
+            System.exit(-1);
+        }
         try {
             Statement statement = connection.createStatement();
             ResultSet result = statement.executeQuery(sql);
@@ -287,6 +292,10 @@ public class GetInfo {
     public static void getOtherInts () {
         Connection connection = Database.getConnection();
         String sql = "SELECT otherid FROM borrowedother";
+        if (connection == null) {
+            System.out.println("Could not connect");
+            System.exit(-1);
+        }
         try {
 
             Statement statement = connection.createStatement();
@@ -337,10 +346,15 @@ public class GetInfo {
     }
 
     public static void addBorrowBook (int userid, String bookid){
-
         Connection connection = Database.getConnection();
         String sql = "INSERT into borrowedbooks (userid, bookid, borrowedday, lastreturnday)" +
                 "VALUES ("+userid+","+bookid+",CURRENT_DATE ,CURRENT_DATE + INTERVAL 10 DAY);";
+
+        if (connection == null) {
+            System.out.println("Could not connect");
+            System.exit(-1);
+        }
+
         try {
             Statement statement = connection.createStatement();
             statement.executeUpdate(sql);
@@ -352,10 +366,14 @@ public class GetInfo {
     }
 
     public static void addBorrowOther (int userid, String otherid){
-
         Connection connection = Database.getConnection();
         String sql = "INSERT into borrowedother (userid, otherid, borrowedday, lastreturnday)" +
                 "VALUES ("+userid+","+otherid+",CURRENT_DATE ,CURRENT_DATE + INTERVAL 10 DAY);";
+
+        if (connection == null) {
+            System.out.println("Could not connect");
+            System.exit(-1);
+        }
         try {
             Statement statement = connection.createStatement();
             statement.executeUpdate(sql);
@@ -372,6 +390,12 @@ public class GetInfo {
         Connection connection = Database.getConnection();
         String sql = "SELECT ruturnday FROM " + borrowinfo + " WHERE "+typeb+"id='"+id+"'";
         System.out.println(sql);
+
+        if (connection == null) {
+            System.out.println("Could not connect");
+            System.exit(-1);
+        }
+
         try {
             Statement statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery(sql);
@@ -399,6 +423,12 @@ public class GetInfo {
         Connection connection = Database.getConnection();
         String sql = "SELECT bookid, ruturnday FROM borrowedbooks WHERE userid='"+userid+"'";
         System.out.println(sql);
+
+        if (connection == null) {
+            System.out.println("Could not connect");
+            System.exit(-1);
+        }
+
         try {
             Statement statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery(sql);
@@ -421,6 +451,12 @@ public class GetInfo {
         Connection connection = Database.getConnection();
         String sql = "SELECT otherid, ruturnday FROM borrowedother WHERE userid='"+userid+"'";
         System.out.println(sql);
+
+        if (connection == null) {
+            System.out.println("Could not connect");
+            System.exit(-1);
+        }
+
         try {
             Statement statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery(sql);
@@ -449,9 +485,14 @@ public class GetInfo {
 
     public static void returnBook (int userid, String typeid) {
         Connection connection = Database.getConnection();
-
         String sql = "UPDATE borrowedbooks SET ruturnday = CURRENT_DATE WHERE userid = '"+userid+"' AND bookid ='"+typeid+"'";
         System.out.println(sql);
+
+        if (connection == null) {
+            System.out.println("Could not connect");
+            System.exit(-1);
+        }
+
         try {
             Statement statement = connection.createStatement();
             statement.executeUpdate(sql);
@@ -465,6 +506,12 @@ public class GetInfo {
         Connection connection = Database.getConnection();
         String sql = "UPDATE borrowedother SET ruturnday = CURRENT_DATE WHERE userid = '"+userid+"' AND otherid ='"+typeid+"'";
         System.out.println(sql);
+
+        if (connection == null) {
+            System.out.println("Could not connect");
+            System.exit(-1);
+        }
+
         try {
             Statement statement = connection.createStatement();
             statement.executeUpdate(sql);
