@@ -126,9 +126,7 @@ public class GetInfo {
                 String book = "Book";
                 Date returnday = resultSet.getDate("ruturnday");
 
-                System.out.println(returnday);
-
-                if (returnday == null) {
+                if (returnday != null) {
                     int bookid = resultSet.getInt("bookid");
                     Date borrowedday = resultSet.getDate("borrowedday");
                     Date lastreturn = resultSet.getDate("lastreturnday");
@@ -153,18 +151,17 @@ public class GetInfo {
         String sql = "SELECT otherid, borrowedday,ruturnday, lastreturnday from borrowedother WHERE userid ="+userid;
         try {
             Statement statement = connection.createStatement();
-            ResultSet resultSet = statement.executeQuery(sql);
+            ResultSet rs = statement.executeQuery(sql);
 
-            while (resultSet.next()) {
+            while (rs.next()) {
                 String other = "other";
-                Date returnday = resultSet.getDate("ruturnday");
-                
-                System.out.println(returnday);
+                Date returnday = rs.getDate("ruturnday");
 
-                if (returnday == null) {
-                    int otherid = resultSet.getInt("otherid");
-                    Date borrowedday = resultSet.getDate("borrowedday");
-                    Date lastreturn = resultSet.getDate("lastreturnday");
+                if (returnday != null) {
+                    System.out.println("Test");
+                    int otherid = rs.getInt("otherid");
+                    Date borrowedday = rs.getDate("borrowedday");
+                    Date lastreturn = rs.getDate("lastreturnday");
 
                     Gui.HistoryGui(otherid,other,borrowedday,returnday,lastreturn);
 
@@ -215,12 +212,13 @@ public class GetInfo {
             ResultSet result = statement.executeQuery(sql);
 
            while (result.next()){
-               int bookid = result.getInt("bookid");
-               Date borrowedday = result.getDate("borrowedday");
                Date ruturnday = result.getDate("ruturnday");
-               Date lastreturnday = result.getDate("lastreturnday");
 
-               if (ruturnday != null) {
+               if (ruturnday == null) {
+                   int bookid = result.getInt("bookid");
+                   Date borrowedday = result.getDate("borrowedday");
+                   Date lastreturnday = result.getDate("lastreturnday");
+
                    Gui.StatusGui(bookid, borrowedday,lastreturnday,book);
                }
 
@@ -242,12 +240,13 @@ public class GetInfo {
 
 
             while (result.next()){
-                int otherid = result.getInt("otherid");
-                Date borrowedday = result.getDate("borrowedday");
                 Date ruturnday = result.getDate("ruturnday");
-                Date lastreturnday = result.getDate("lastreturnday");
 
-                if (ruturnday != null) {
+                if (ruturnday == null) {
+                    int otherid = result.getInt("otherid");
+                    Date borrowedday = result.getDate("borrowedday");
+                    Date lastreturnday = result.getDate("lastreturnday");
+
                     Gui.StatusGui(otherid, borrowedday,lastreturnday,media);
                 }
 

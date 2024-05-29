@@ -6,24 +6,26 @@ import java.util.ArrayList;
 import java.util.Date;
 
 public class Gui implements ActionListener {
+    //Frames
+    JFrame LoginFrame = new JFrame("Login");
+    JFrame ProfileFrame = new JFrame("Profile");
+    JFrame Library = new JFrame("Fulkoping");
+    static JFrame SearchFrame = new JFrame("Search Results");
+    static JFrame StatusFrame = new JFrame("Status");
+    static JFrame HistoryFrame = new JFrame("History");
+    static JFrame BorrowFrame = new JFrame("Borrow");
 
+    //TextFields/PasswordField
     static JTextField Username = new JTextField();
     static JPasswordField Password = new JPasswordField();
-    JFrame LoginFrame = new JFrame("Login");
-    static JFrame Library = new JFrame("Fulkoping");
-
-    JFrame ProfileFrame = new JFrame("Profile");
+    static JTextField input = new JTextField();
+    static JTextField idinput = new JTextField();
     JTextField name = new JTextField();
     JTextField email = new JTextField();
     JTextField password = new JPasswordField();
-    public static JTextField Errors = new JTextField();
     JTextField SearchBox = new JTextField();
 
-    static JFrame SearchFrame = new JFrame("Search Results");
-
-    static JFrame StatusFrame = new JFrame("Status");
-
-    static JFrame HistoryFrame = new JFrame("History");
+    //Labels
 
     static int id;
 
@@ -33,9 +35,6 @@ public class Gui implements ActionListener {
 
     static ArrayList<String> types = new ArrayList<>();
 
-    static JFrame BorrowFrame = new JFrame("Borrow");
-
-    static JTextField input = new JTextField();
 
     static JButton ConfirmBorrow = new JButton("ConfirmBorrow");
 
@@ -49,7 +48,6 @@ public class Gui implements ActionListener {
 
     static JButton ConfirmReturn = new JButton("ConfirmReturn");
 
-    static JTextField idinput = new JTextField();
 
     Gui () {
         Library.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
@@ -98,6 +96,9 @@ public class Gui implements ActionListener {
         chose.addActionListener(this);
         ConfirmReturn.addActionListener(this);
         idinput.setPreferredSize(new Dimension(20,20));
+
+        JLabel Info = new JLabel("If a button don't do anything it means you need to log in");
+        Library.add(Info);
     }
 
     public static void ResultGui(String id, String name,String type) {
@@ -150,6 +151,7 @@ public class Gui implements ActionListener {
 
 
         }else {
+            ProfileFrame.setSize(200,200);
             ProfileFrame.setVisible(true);
             JLabel NotLoggedIn = new JLabel("You need to log in first");
             ProfileFrame.add(NotLoggedIn);
@@ -161,11 +163,11 @@ public class Gui implements ActionListener {
         StatusFrame.setSize(650,250);
         StatusFrame.setLayout(new FlowLayout(FlowLayout.LEFT));
 
-        JLabel idLabel = new JLabel(", with id " + id);
-        JLabel borrowLabel = new JLabel(", that was borrowed on the " + borrowedDate);
-        JLabel typeLabel = new JLabel("This is a " + type);
-        JLabel lastReturnLabel = new JLabel(", and the last day to return it is/was " + lastReturnDate);
-        JLabel returnday = new JLabel("");
+        JLabel idLabel = new JLabel(" with id " + id);
+        JLabel borrowLabel = new JLabel(" that was borrowed on the " + borrowedDate);
+        JLabel typeLabel = new JLabel("There is a " + type);
+        JLabel lastReturnLabel = new JLabel(" and the last day to return it is/was " + lastReturnDate);
+
 
         StatusFrame.add(typeLabel);
         StatusFrame.add(idLabel);
@@ -177,13 +179,13 @@ public class Gui implements ActionListener {
 
     public static void HistoryGui (int id,String type ,Date borrowedDate, Date ReturnDate, Date lastReturnDate) {
 
-        HistoryFrame.setSize(1100,250);
+        HistoryFrame.setSize(625,250);
         HistoryFrame.setLayout(new FlowLayout(FlowLayout.LEFT));
 
-        JLabel idLabel = new JLabel(", with id " + id);
-        JLabel borrowLabel = new JLabel(", that was borrowed on the " + borrowedDate);
-        JLabel typeLabel = new JLabel("This is a " + type);
-        JLabel returnday = new JLabel(", was returned on " +ReturnDate);
+        JLabel idLabel = new JLabel(" with id " + id);
+        JLabel borrowLabel = new JLabel(" that was borrowed on the " + borrowedDate);
+        JLabel typeLabel = new JLabel("There is a " + type);
+        JLabel returnday = new JLabel(" was returned on " +ReturnDate);
 
         HistoryFrame.add(typeLabel);
         HistoryFrame.add(idLabel);
