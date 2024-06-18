@@ -1,4 +1,4 @@
--- MySQL dump 10.13  Distrib 8.0.18, for Win64 (x86_64)
+-- MySQL dump 10.13  Distrib 5.7.29, for Win64 (x86_64)
 --
 -- Host: 127.0.0.1    Database: fulkopinglibrary
 -- ------------------------------------------------------
@@ -7,7 +7,7 @@
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!50503 SET NAMES utf8mb4 */;
+/*!40101 SET NAMES utf8 */;
 /*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
 /*!40103 SET TIME_ZONE='+00:00' */;
 /*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
@@ -21,7 +21,7 @@
 
 DROP TABLE IF EXISTS `authors`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `authors` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(56) NOT NULL,
@@ -39,3 +39,182 @@ LOCK TABLES `authors` WRITE;
 INSERT INTO `authors` VALUES (1,'Bell'),(2,'Bob'),(5,'Dobby'),(3,'John'),(6,'Steve'),(7,'Val'),(4,'Zizzi');
 /*!40000 ALTER TABLE `authors` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Table structure for table `books`
+--
+
+DROP TABLE IF EXISTS `books`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `books` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(20) DEFAULT NULL,
+  `authorid` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `authorid` (`authorid`),
+  CONSTRAINT `books_ibfk_1` FOREIGN KEY (`authorid`) REFERENCES `authors` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=62 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `books`
+--
+
+LOCK TABLES `books` WRITE;
+/*!40000 ALTER TABLE `books` DISABLE KEYS */;
+INSERT INTO `books` VALUES (1,'Stars',1),(32,'Salt',1),(33,'Switch',2),(34,'Screen',4),(35,'Koala',3),(36,'Dogs',5),(37,'Cats',6),(38,'Pokemon',7),(39,'Sports',1),(40,'Gaming',2),(41,'Ready Player ONE',4),(42,'Pets',3),(43,'Cooking with Dobby',5),(44,'Cooking with Steve',6),(45,'Cooking with Val',7),(46,'Cooking with Bell',1),(47,'Coooking with bob',2),(48,'Cooking with Zizzi',4),(49,'Cooking with John',3),(50,'Tacos',5),(51,'Pie',6),(52,'Sql',7),(53,'Java',1),(54,'Html & Css',2),(55,'Pearler Beads',4),(56,'Consoles',3),(57,'How to build a pc',5),(58,'Decorating',6),(59,'Rubiks Cube',7),(60,'How to care for pets',5),(61,'Utvandrarna',2);
+/*!40000 ALTER TABLE `books` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `borrowedbooks`
+--
+
+DROP TABLE IF EXISTS `borrowedbooks`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `borrowedbooks` (
+  `userid` int(11) NOT NULL,
+  `bookid` int(11) NOT NULL,
+  `borrowedday` date NOT NULL DEFAULT curdate(),
+  `ruturnday` date DEFAULT NULL,
+  `lastreturnday` date NOT NULL,
+  KEY `userid` (`userid`),
+  KEY `bookid` (`bookid`),
+  CONSTRAINT `borrowedbooks_ibfk_1` FOREIGN KEY (`userid`) REFERENCES `users` (`id`),
+  CONSTRAINT `borrowedbooks_ibfk_2` FOREIGN KEY (`bookid`) REFERENCES `books` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `borrowedbooks`
+--
+
+LOCK TABLES `borrowedbooks` WRITE;
+/*!40000 ALTER TABLE `borrowedbooks` DISABLE KEYS */;
+INSERT INTO `borrowedbooks` VALUES (1,1,'2024-01-18','2024-05-29','2024-02-17'),(1,1,'2024-01-19','2024-05-29','2024-02-18'),(1,32,'2024-05-21','2024-05-29','2024-06-20'),(1,33,'2024-05-21','2024-05-29','2024-06-20'),(1,34,'2024-05-21','2024-05-29','2024-06-20'),(1,35,'2024-05-21','2024-05-21','2024-06-20'),(1,36,'2024-05-29','2024-05-29','2024-06-28'),(1,50,'2024-05-29',NULL,'2024-06-08');
+/*!40000 ALTER TABLE `borrowedbooks` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `borrowedother`
+--
+
+DROP TABLE IF EXISTS `borrowedother`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `borrowedother` (
+  `userid` int(11) NOT NULL,
+  `otherid` int(11) NOT NULL,
+  `borrowedday` date NOT NULL DEFAULT curdate(),
+  `ruturnday` date DEFAULT NULL,
+  `lastreturnday` date NOT NULL,
+  KEY `userid` (`userid`),
+  KEY `otherid` (`otherid`),
+  CONSTRAINT `borrowedother_ibfk_1` FOREIGN KEY (`userid`) REFERENCES `users` (`id`),
+  CONSTRAINT `borrowedother_ibfk_2` FOREIGN KEY (`otherid`) REFERENCES `other` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `borrowedother`
+--
+
+LOCK TABLES `borrowedother` WRITE;
+/*!40000 ALTER TABLE `borrowedother` DISABLE KEYS */;
+INSERT INTO `borrowedother` VALUES (1,1,'2024-01-18','2024-05-29','2024-01-28'),(1,9,'2024-05-29','2024-05-29','2024-06-08'),(1,6,'2024-05-29','2024-05-29','2024-06-08');
+/*!40000 ALTER TABLE `borrowedother` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `other`
+--
+
+DROP TABLE IF EXISTS `other`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `other` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(30) NOT NULL,
+  `typeid` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `name` (`name`),
+  KEY `typeid` (`typeid`),
+  CONSTRAINT `other_ibfk_1` FOREIGN KEY (`typeid`) REFERENCES `othertype` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `other`
+--
+
+LOCK TABLES `other` WRITE;
+/*!40000 ALTER TABLE `other` DISABLE KEYS */;
+INSERT INTO `other` VALUES (1,'Test',1),(2,'Pokemon Red',2),(3,'Hours',1),(4,'News',3),(5,'Pokemon Green',2),(6,'Pokemon Scarlet',2),(7,'RainDrop',1),(8,'Magic',1),(9,'Pokemon Violet',2),(10,'Random',1),(11,'Star News',3);
+/*!40000 ALTER TABLE `other` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `othertype`
+--
+
+DROP TABLE IF EXISTS `othertype`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `othertype` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `types` varchar(56) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `types` (`types`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `othertype`
+--
+
+LOCK TABLES `othertype` WRITE;
+/*!40000 ALTER TABLE `othertype` DISABLE KEYS */;
+INSERT INTO `othertype` VALUES (1,'cd'),(2,'Game'),(3,'Journal');
+/*!40000 ALTER TABLE `othertype` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `users`
+--
+
+DROP TABLE IF EXISTS `users`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `users` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `Username` varchar(15) NOT NULL,
+  `email` varchar(56) NOT NULL,
+  `password` varchar(56) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `Username` (`Username`),
+  UNIQUE KEY `email` (`email`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `users`
+--
+
+LOCK TABLES `users` WRITE;
+/*!40000 ALTER TABLE `users` DISABLE KEYS */;
+INSERT INTO `users` VALUES (1,'Martin','m@gmail.com','123'),(2,'Jojo','Jojo@gmail.com','8462');
+/*!40000 ALTER TABLE `users` ENABLE KEYS */;
+UNLOCK TABLES;
+/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
+
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+
+-- Dump completed on 2024-06-18 12:13:40
